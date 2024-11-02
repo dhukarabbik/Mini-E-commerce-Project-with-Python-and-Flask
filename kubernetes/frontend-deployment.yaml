@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: frontend:latest  # Ensure this is correct
+        ports:
+        - containerPort: 5000  # Adjust this based on your app's port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 5000  # Match the container port
+    nodePort: 30001    # Port exposed on the Node
+  selector:
+    app: frontend
